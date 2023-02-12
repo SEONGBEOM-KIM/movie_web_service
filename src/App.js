@@ -2,9 +2,27 @@ import Button from "./Button";
 import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
+function Hello() {
+  useEffect(() => {
+    console.log("hi :)");
+    return () => console.log("bye :(");
+  });
+  useEffect(function () {
+    console.log("hi :)");
+    return function () {
+      console.log("bye :(");
+    };
+  });
+  return <h1>Hello</h1>;
+}
+
 function App() {
   const [counter, setCounter] = useState(0);
   const [keyword, setKeyword] = useState("");
+  const [showing, setShowing] = useState(false);
+  const onShowing = (event) => {
+    setShowing((prev) => !prev);
+  };
   const onChange = (event) => {
     setKeyword(event.target.value);
   };
@@ -34,6 +52,8 @@ function App() {
       <h1 className={styles.title}>{counter}</h1>
       <Button text={"Continue"} />
       <button onClick={onClick}>Click me</button>
+      <button onClick={onShowing}>{showing ? "Hide" : "Show"}</button>
+      {showing ? <Hello /> : null}
     </div>
   );
 }
