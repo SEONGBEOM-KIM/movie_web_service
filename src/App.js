@@ -1,59 +1,31 @@
-import Button from "./Button";
-import styles from "./App.module.css";
-import { useState, useEffect } from "react";
-
-function Hello() {
-  useEffect(() => {
-    console.log("hi :)");
-    return () => console.log("bye :(");
-  });
-  useEffect(function () {
-    console.log("hi :)");
-    return function () {
-      console.log("bye :(");
-    };
-  });
-  return <h1>Hello</h1>;
-}
+import { useState } from "react";
 
 function App() {
-  const [counter, setCounter] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const [showing, setShowing] = useState(false);
-  const onShowing = (event) => {
-    setShowing((prev) => !prev);
-  };
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
   const onChange = (event) => {
-    setKeyword(event.target.value);
+    setToDo(event.target.value);
   };
-  const onClick = () => {
-    setCounter((prev) => prev + 1);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (toDo === "") {
+      return;
+    }
+    setToDo("");
+    setToDos((currentArray) => [toDo, ...currentArray]);
   };
-  useEffect(() => {
-    console.log("I run only once");
-  }, []);
-  useEffect(() => {
-    console.log("I run when keyword changes");
-  }, [keyword]);
-  useEffect(() => {
-    console.log("I run when counter changes");
-  }, [counter]);
-  useEffect(() => {
-    console.log("I run when keyword & counter changes");
-  }, [keyword, counter]);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1 className={styles.title}>{counter}</h1>
-      <Button text={"Continue"} />
-      <button onClick={onClick}>Click me</button>
-      <button onClick={onShowing}>{showing ? "Hide" : "Show"}</button>
-      {showing ? <Hello /> : null}
+      <h1>My To Dos({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="Write your to do..."
+        />
+        <button>Add To Do</button>
+      </form>
     </div>
   );
 }
