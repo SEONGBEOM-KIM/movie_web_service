@@ -9,10 +9,10 @@ function App() {
   const onSubmit = (event) => {
     event.preventDefault();
     if (toDo === "") {
-      return;
+      return; // <- there is no value
     }
-    setToDo("");
-    setToDos((currentArray) => [toDo, ...currentArray]);
+    setToDo(""); // <- clear value
+    setToDos((currentArray) => [toDo, ...currentArray]); // if prop is func, first arg is current state
   };
   return (
     <div>
@@ -26,7 +26,13 @@ function App() {
         />
         <button>Add To Do</button>
       </form>
-    </div>
+      <hr />
+      <ul>
+        {toDos.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div> // map -> do func for each arg in array and replace args by return value
   );
 }
 
